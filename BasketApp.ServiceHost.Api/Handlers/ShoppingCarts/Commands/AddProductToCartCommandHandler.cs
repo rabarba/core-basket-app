@@ -1,8 +1,8 @@
-﻿using BasketApp.Data.Documents;
+﻿using BasketApp.Core.Models.Exceptions;
+using BasketApp.Data.Documents;
 using BasketApp.Service.Services;
 using MediatR;
 using MongoDB.Bson;
-using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -25,7 +25,7 @@ namespace BasketApp.ServiceHost.Api.Handlers.ShoppingCarts.Commands
 
             if (productQuantity < 1)
             {
-                throw new Exception();
+                throw new ApiException("Product not found", System.Net.HttpStatusCode.NotFound);
             }
 
             // CartId is null will be new cart scenario

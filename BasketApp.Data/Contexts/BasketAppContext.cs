@@ -1,4 +1,4 @@
-﻿using BasketApp.Core.Configs;
+﻿using BasketApp.Data.Configs;
 using BasketApp.Data.Documents;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;

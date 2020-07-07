@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace BasketApp.Core.Configs
+﻿namespace BasketApp.Data.Configs
 {
     public class MongoDbSettings : IMongoDbSettings
     {

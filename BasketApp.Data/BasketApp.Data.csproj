@@ -10,8 +10,4 @@
     <PackageReference Include="MongoDB.Driver" Version="2.10.4" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\BasketApp.Core\BasketApp.Core.csproj" />
-  </ItemGroup>
-
 </Project>

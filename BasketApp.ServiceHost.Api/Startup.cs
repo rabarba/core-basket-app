@@ -1,5 +1,4 @@
-using BasketApp.Core.Configs;
-using BasketApp.Data.Contexts;
+using BasketApp.Data.Configs;
 using BasketApp.Data.Repositories;
 using BasketApp.Data.Repositories.Impl;
 using BasketApp.Service.Services;
@@ -64,16 +63,20 @@ namespace BasketApp.ServiceHost.Api
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Basket App V1");
             });
 
-            app.UseHttpsRedirection();
+            app.UseExceptionHandler(appError =>
+            {
+               
+            });
 
             app.UseRouting();
+
 
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-            });
+            });      
         }
     }
 }

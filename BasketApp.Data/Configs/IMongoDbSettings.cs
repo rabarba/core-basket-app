@@ -1,4 +1,4 @@
-﻿namespace BasketApp.Core.Configs
+﻿namespace BasketApp.Data.Configs
 {
     public interface IMongoDbSettings
     {
