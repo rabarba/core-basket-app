@@ -3,6 +3,7 @@ using BasketApp.Data.Repositories;
 using BasketApp.Data.Repositories.Impl;
 using BasketApp.Service.Services;
 using BasketApp.Service.Services.Impl;
+using BasketApp.ServiceHost.Api.Extensions;
 using BasketApp.ServiceHost.Api.Handlers.ShoppingCarts.Commands;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
@@ -70,6 +71,7 @@ namespace BasketApp.ServiceHost.Api
 
             app.UseRouting();
 
+            app.ConfigureExceptionHandler();
 
             app.UseAuthorization();
 

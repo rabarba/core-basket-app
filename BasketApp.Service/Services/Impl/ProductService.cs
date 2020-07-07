@@ -1,5 +1,5 @@
 ﻿using BasketApp.Data.Repositories;
-using System;
+using MongoDB.Bson;
 using System.Threading.Tasks;
 
 namespace BasketApp.Service.Services.Impl
@@ -11,7 +11,7 @@ namespace BasketApp.Service.Services.Impl
         {
             _productRepository = productRepository;
         }
-        public async Task<int> GetProductQuantity(string productId)
+        public async Task<int> GetProductQuantity(ObjectId productId)
         {
             var product = await _productRepository.Get(productId);
             return product == null ? 0 : product.Quantity;

@@ -4,7 +4,6 @@ using BasketApp.Data.Documents;
 using Microsoft.Extensions.Options;
 using MongoDB.Bson;
 using MongoDB.Driver;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace BasketApp.Data.Repositories.Impl
@@ -17,10 +16,9 @@ namespace BasketApp.Data.Repositories.Impl
             _basketAppContext = new BasketAppContext(mongoDbSettings);
         }
 
-        public async Task<Product> Get(string productId)
+        public async Task<Product> Get(ObjectId productId)
         {
-            var objectId = new ObjectId(productId);
-            var filter = Builders<Product>.Filter.Eq(x => x.Id, objectId);
+            var filter = Builders<Product>.Filter.Eq(x => x.Id, productId);
             return await _basketAppContext.Products.Find(filter).FirstOrDefaultAsync();
         }
     }

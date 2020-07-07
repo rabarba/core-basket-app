@@ -17,22 +17,23 @@ namespace BasketApp.Data.Repositories.Impl
             _basketAppContext = new BasketAppContext(mongoDbSettings);
         }
 
-        public async Task Create(Cart cart)
+        public async Task<string> Create(Cart cart)
         {
             await _basketAppContext.Carts.InsertOneAsync(cart);
+            return cart.Id.ToString();
         }
 
-        public async Task<Cart> Get(string cartId)
+        public async Task<Cart> Get(ObjectId cartId)
         {
-            var objectId = new ObjectId(cartId);
-            var filter = Builders<Cart>.Filter.Eq(x => x.Id, objectId);
+            var filter = Builders<Cart>.Filter.Eq(x => x.Id, cartId);
             return await _basketAppContext.Carts.Find(filter).FirstOrDefaultAsync();
         }
 
-        public async Task Update(Cart cart)
+        public async Task<string> Update(Cart cart)
         {
             var filter = Builders<Cart>.Filter.Eq(x => x.Id, cart.Id);
             await _basketAppContext.Carts.ReplaceOneAsync(filter, cart);
+            return cart.Id.ToString();
         }
     }
 }

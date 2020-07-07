@@ -1,5 +1,6 @@
 ﻿using BasketApp.Data.Documents;
 using BasketApp.Data.Repositories;
+using MongoDB.Bson;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -14,20 +15,20 @@ namespace BasketApp.Service.Services.Impl
             _cartRepository = cartRepository;
         }
 
-        public async Task AddProductToExistingCart(Cart cart)
+        public async Task<string> AddProductToExistingCart(Cart cart)
         {
-            await _cartRepository.Update(cart);
+            return await _cartRepository.Update(cart);
         }
 
-        public async Task AddProductToNotExistingCart(Cart cart)
+        public async Task<string> AddProductToNotExistingCart(Cart cart)
         {
-            await _cartRepository.Create(cart);
+            return await _cartRepository.Create(cart);
         }
 
-        public async Task<List<string>> GetProductsFromCart(string cartId)
+        public async Task<List<string>> GetProductsFromCart(ObjectId cartId)
         {
-            var Cart = await _cartRepository.Get(cartId);
-            return Cart?.ProductIdList;
+            var cart = await _cartRepository.Get(cartId);
+            return cart?.ProductIdList;
         }
     }
 }

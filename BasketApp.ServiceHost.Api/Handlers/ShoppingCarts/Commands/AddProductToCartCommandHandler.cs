@@ -21,7 +21,17 @@ namespace BasketApp.ServiceHost.Api.Handlers.ShoppingCarts.Commands
         }
         public async Task<string> Handle(AddProductToCartCommand request, CancellationToken cancellationToken)
         {
-            var productQuantity = await _productService.GetProductQuantity(request.ProductId);
+            if (!ObjectId.TryParse(request.ProductId, out ObjectId productObjectId))
+            {
+                throw new ApiException("Wrong ProductId Format", System.Net.HttpStatusCode.BadRequest);
+            }
+
+            if (!ObjectId.TryParse(request.CartId, out ObjectId cartObjectId))
+            {
+                throw new ApiException("Wrong CartId Format", System.Net.HttpStatusCode.BadRequest);
+            }
+
+            var productQuantity = await _productService.GetProductQuantity(productObjectId);
 
             if (productQuantity < 1)
             {
@@ -38,7 +48,8 @@ namespace BasketApp.ServiceHost.Api.Handlers.ShoppingCarts.Commands
             }
             else
             {
-                var productIdList = await _cartService.GetProductsFromCart(request.CartId);
+                var productIdList = await _cartService.GetProductsFromCart(cartObjectId);
+                productIdList ??= new List<string>();
                 productIdList.Add(request.ProductId);
 
                 await _cartService.AddProductToExistingCart(new Cart

@@ -1,12 +1,13 @@
 ﻿using BasketApp.Data.Documents;
+using MongoDB.Bson;
 using System.Threading.Tasks;
 
 namespace BasketApp.Data.Repositories
 {
     public interface ICartRepository
     {
-        Task Create(Cart cart);
-        Task<Cart> Get(string cartId);
-        Task Update(Cart cart);
+        Task<string> Create(Cart cart);
+        Task<Cart> Get(ObjectId cartId);
+        Task<string> Update(Cart cart);
     }
 }
