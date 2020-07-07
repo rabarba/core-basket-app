@@ -16,21 +16,21 @@ namespace BasketApp.Data.Repositories.Impl
             _basketAppContext = basketAppContext;
         }
 
-        public async Task Create(Cart Cart)
+        public async Task Create(Cart cart)
         {
-            await _basketAppContext.Carts.InsertOneAsync(Cart);
+            await _basketAppContext.Carts.InsertOneAsync(cart);
         }
 
-        public async Task<Cart> Get(long CartId)
+        public async Task<Cart> Get(long cartId)
         {
-            var filter = Builders<Cart>.Filter.Eq(x => x.Id, CartId);
+            var filter = Builders<Cart>.Filter.Eq(x => x.Id, cartId);
             return await _basketAppContext.Carts.Find(filter).FirstOrDefaultAsync();
         }
 
-        public async Task Update(Cart Cart)
+        public async Task Update(Cart cart)
         {
-            var filter = Builders<Cart>.Filter.Eq(x => x.Id, Cart.Id);
-            await _basketAppContext.Carts.ReplaceOneAsync(filter, Cart);
+            var filter = Builders<Cart>.Filter.Eq(x => x.Id, cart.Id);
+            await _basketAppContext.Carts.ReplaceOneAsync(filter, cart);
         }
 
         public async Task<long> GetId()

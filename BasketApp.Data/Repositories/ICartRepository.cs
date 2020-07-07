@@ -5,9 +5,9 @@ namespace BasketApp.Data.Repositories
 {
     public interface ICartRepository
     {
-        Task Create(Cart Cart);
-        Task<Cart> Get(long CartId);
-        Task Update(Cart Cart);
+        Task Create(Cart cart);
+        Task<Cart> Get(long cartId);
+        Task Update(Cart cart);
         Task<long> GetId();
     }
 }
