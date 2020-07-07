@@ -6,6 +6,6 @@ namespace BasketApp.Data.Repositories
 {
     public interface IProductRepository
     {
-        Task<Product> Get(Guid productId);
+        Task<Product> Get(long productId);
     }
 }

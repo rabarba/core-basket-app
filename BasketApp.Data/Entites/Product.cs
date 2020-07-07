@@ -1,6 +1,5 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
-using System;
 
 namespace BasketApp.Data.Entites
 {
@@ -8,7 +7,7 @@ namespace BasketApp.Data.Entites
     {
         [BsonId]
         public ObjectId InternalId { get; set; }
-        public Guid Id { get; set; }
+        public long Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public decimal Price { get; set; }

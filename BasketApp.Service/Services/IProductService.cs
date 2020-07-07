@@ -5,6 +5,6 @@ namespace BasketApp.Service.Services
 {
     public interface IProductService
     {
-        Task<int> GetProductQuantity(Guid productId);
+        Task<int> GetProductQuantity(long productId);
     }
 }

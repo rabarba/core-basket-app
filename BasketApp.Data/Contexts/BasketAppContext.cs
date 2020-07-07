@@ -15,6 +15,6 @@ namespace BasketApp.Data.Contexts
 
         public IMongoCollection<Product> Products => _mongoDatabase.GetCollection<Product>("Products");
 
-        public IMongoCollection<Basket> Baskets => _mongoDatabase.GetCollection<Basket>("Baskets");
+        public IMongoCollection<Cart> Carts => _mongoDatabase.GetCollection<Cart>("Carts");
     }
 }

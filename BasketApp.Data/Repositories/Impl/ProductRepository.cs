@@ -13,7 +13,7 @@ namespace BasketApp.Data.Repositories.Impl
         {
             _basketAppContext = basketAppContext;
         }
-        public async Task<Product> Get(Guid productId)
+        public async Task<Product> Get(long productId)
         {
             var filter = Builders<Product>.Filter.Eq(x => x.Id, productId);
             return await _basketAppContext.Products.Find(filter).FirstOrDefaultAsync();
