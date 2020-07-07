@@ -26,11 +26,6 @@ namespace BasketApp.ServiceHost.Api.Handlers.ShoppingCarts.Commands
                 throw new ApiException("Wrong ProductId Format", System.Net.HttpStatusCode.BadRequest);
             }
 
-            if (!ObjectId.TryParse(request.CartId, out ObjectId cartObjectId))
-            {
-                throw new ApiException("Wrong CartId Format", System.Net.HttpStatusCode.BadRequest);
-            }
-
             var productQuantity = await _productService.GetProductQuantity(productObjectId);
 
             if (productQuantity < 1)
@@ -41,25 +36,28 @@ namespace BasketApp.ServiceHost.Api.Handlers.ShoppingCarts.Commands
             // CartId is null will be new cart scenario
             if (string.IsNullOrEmpty(request.CartId))
             {
-                await _cartService.AddProductToNotExistingCart(new Cart
+                return await _cartService.AddProductToNotExistingCart(new Cart
                 {
                     ProductIdList = new List<string> { request.ProductId }
                 });
             }
-            else
-            {
-                var productIdList = await _cartService.GetProductsFromCart(cartObjectId);
-                productIdList ??= new List<string>();
-                productIdList.Add(request.ProductId);
 
-                await _cartService.AddProductToExistingCart(new Cart
-                {
-                    Id = new ObjectId(request.CartId),
-                    ProductIdList = productIdList
-                });
+            // CartId is not null will be existing cart scenario
+            if (!ObjectId.TryParse(request.CartId, out ObjectId cartObjectId))
+            {
+                throw new ApiException("Wrong CartId Format", System.Net.HttpStatusCode.BadRequest);
             }
 
-            return string.Empty;
+            var productIdList = await _cartService.GetProductsFromCart(cartObjectId);
+            productIdList ??= new List<string>();
+            productIdList.Add(request.ProductId);
+
+            return await _cartService.AddProductToExistingCart(new Cart
+            {
+                Id = new ObjectId(request.CartId),
+                ProductIdList = productIdList
+            });
+
         }
     }
 }
