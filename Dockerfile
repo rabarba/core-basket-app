@@ -7,8 +7,13 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
 WORKDIR /src
-# Copy everything and build
-COPY . ./
+COPY ["BasketApp.ServiceHost.Api/BasketApp.ServiceHost.Api.csproj", "BasketApp.ServiceHost.Api/"]
+COPY ["BasketApp.Data/BasketApp.Data.csproj", "BasketApp.Data/"]
+COPY ["BasketApp.Core/BasketApp.Core.csproj", "BasketApp.Core/"]
+COPY ["BasketApp.Service/BasketApp.Service.csproj", "BasketApp.Service/"]
+RUN dotnet restore "BasketApp.ServiceHost.Api/BasketApp.ServiceHost.Api.csproj"
+COPY . .
+WORKDIR "/src/BasketApp.ServiceHost.Api"
 RUN dotnet build "BasketApp.ServiceHost.Api.csproj" -c Release -o /app/build
 
 FROM build AS publish
