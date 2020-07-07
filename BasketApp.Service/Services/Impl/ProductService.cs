@@ -11,7 +11,7 @@ namespace BasketApp.Service.Services.Impl
         {
             _productRepository = productRepository;
         }
-        public async Task<int> GetProductQuantity(long productId)
+        public async Task<int> GetProductQuantity(string productId)
         {
             var product = await _productRepository.Get(productId);
             return product == null ? 0 : product.Quantity;

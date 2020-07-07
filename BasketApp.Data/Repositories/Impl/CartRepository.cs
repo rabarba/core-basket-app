@@ -1,8 +1,9 @@
-﻿using BasketApp.Data.Contexts;
-using BasketApp.Data.Entites;
+﻿using BasketApp.Core.Configs;
+using BasketApp.Data.Contexts;
+using BasketApp.Data.Documents;
+using Microsoft.Extensions.Options;
 using MongoDB.Bson;
 using MongoDB.Driver;
-using System;
 using System.Threading.Tasks;
 
 namespace BasketApp.Data.Repositories.Impl
@@ -11,9 +12,9 @@ namespace BasketApp.Data.Repositories.Impl
     {
         private readonly IBasketAppContext _basketAppContext;
 
-        public CartRepository(BasketAppContext basketAppContext)
+        public CartRepository(IOptions<MongoDbSettings> mongoDbSettings)
         {
-            _basketAppContext = basketAppContext;
+            _basketAppContext = new BasketAppContext(mongoDbSettings);
         }
 
         public async Task Create(Cart cart)
@@ -21,9 +22,10 @@ namespace BasketApp.Data.Repositories.Impl
             await _basketAppContext.Carts.InsertOneAsync(cart);
         }
 
-        public async Task<Cart> Get(long cartId)
+        public async Task<Cart> Get(string cartId)
         {
-            var filter = Builders<Cart>.Filter.Eq(x => x.Id, cartId);
+            var objectId = new ObjectId(cartId);
+            var filter = Builders<Cart>.Filter.Eq(x => x.Id, objectId);
             return await _basketAppContext.Carts.Find(filter).FirstOrDefaultAsync();
         }
 
@@ -31,11 +33,6 @@ namespace BasketApp.Data.Repositories.Impl
         {
             var filter = Builders<Cart>.Filter.Eq(x => x.Id, cart.Id);
             await _basketAppContext.Carts.ReplaceOneAsync(filter, cart);
-        }
-
-        public async Task<long> GetId()
-        {
-            return await _basketAppContext.Carts.CountDocumentsAsync(new BsonDocument());
         }
     }
 }

@@ -1,6 +1,7 @@
-﻿using BasketApp.Data.Entites;
+﻿using BasketApp.Data.Documents;
 using BasketApp.Service.Services;
 using MediatR;
+using MongoDB.Bson;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BasketApp.ServiceHost.Api.Handlers.ShoppingCarts.Commands
 {
-    public class AddProductToCartCommandHandler : IRequestHandler<AddProductToCartCommand, long>
+    public class AddProductToCartCommandHandler : IRequestHandler<AddProductToCartCommand, string>
     {
         private readonly IProductService _productService;
         private readonly ICartService _cartService;
@@ -18,7 +19,7 @@ namespace BasketApp.ServiceHost.Api.Handlers.ShoppingCarts.Commands
             _productService = productService;
             _cartService = cartService;
         }
-        public async Task<long> Handle(AddProductToCartCommand request, CancellationToken cancellationToken)
+        public async Task<string> Handle(AddProductToCartCommand request, CancellationToken cancellationToken)
         {
             var productQuantity = await _productService.GetProductQuantity(request.ProductId);
 
@@ -28,24 +29,26 @@ namespace BasketApp.ServiceHost.Api.Handlers.ShoppingCarts.Commands
             }
 
             // CartId is null will be new cart scenario
-            if (request.CartId == null)
+            if (string.IsNullOrEmpty(request.CartId))
             {
-                return await _cartService.AddProductToNotExistingCart(new Cart
+                await _cartService.AddProductToNotExistingCart(new Cart
                 {
-                    ProductIdList = new List<long> { request.ProductId }
+                    ProductIdList = new List<string> { request.ProductId }
                 });
             }
             else
             {
-                var productIdList = await _cartService.GetProductsFromCart((long)request.CartId);
+                var productIdList = await _cartService.GetProductsFromCart(request.CartId);
                 productIdList.Add(request.ProductId);
 
-                return await _cartService.AddProductToExistingCart(new Cart
+                await _cartService.AddProductToExistingCart(new Cart
                 {
-                    Id = (long)request.CartId,
+                    Id = new ObjectId(request.CartId),
                     ProductIdList = productIdList
                 });
             }
+
+            return string.Empty;
         }
     }
 }

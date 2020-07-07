@@ -1,4 +1,4 @@
-﻿using BasketApp.Data.Entites;
+﻿using BasketApp.Data.Documents;
 using MongoDB.Driver;
 
 namespace BasketApp.Data.Contexts

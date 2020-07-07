@@ -1,5 +1,4 @@
-﻿using BasketApp.Data.Entites;
-using System;
+﻿using BasketApp.Data.Documents;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -7,10 +6,10 @@ namespace BasketApp.Service.Services
 {
     public interface ICartService
     {
-        Task<List<long>> GetProductsFromCart(long CartId);
+        Task<List<string>> GetProductsFromCart(string CartId);
 
-        Task<long> AddProductToExistingCart(Cart Cart);
+        Task AddProductToExistingCart(Cart Cart);
 
-        Task<long> AddProductToNotExistingCart(Cart Cart);
+        Task AddProductToNotExistingCart(Cart Cart);
     }
 }

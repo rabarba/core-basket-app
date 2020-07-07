@@ -1,4 +1,4 @@
-﻿using BasketApp.Data.Entites;
+﻿using BasketApp.Data.Documents;
 using System.Threading.Tasks;
 
 namespace BasketApp.Data.Repositories
@@ -6,8 +6,7 @@ namespace BasketApp.Data.Repositories
     public interface ICartRepository
     {
         Task Create(Cart cart);
-        Task<Cart> Get(long cartId);
+        Task<Cart> Get(string cartId);
         Task Update(Cart cart);
-        Task<long> GetId();
     }
 }

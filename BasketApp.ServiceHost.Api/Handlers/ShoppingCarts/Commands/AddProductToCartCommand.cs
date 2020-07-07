@@ -1,13 +1,10 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Mvc;
-using System;
 
 namespace BasketApp.ServiceHost.Api.Handlers.ShoppingCarts.Commands
 {
-    public class AddProductToCartCommand : IRequest<long>
+    public class AddProductToCartCommand : IRequest<string>
     {
-        [FromRoute]
-        public long ProductId { get; set; }
-        public Nullable<long> CartId { get; set; }
+        internal string ProductId { get; set; }
+        public string CartId { get; set; }
     }
 }

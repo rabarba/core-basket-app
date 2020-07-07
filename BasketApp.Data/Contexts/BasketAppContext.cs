@@ -1,5 +1,6 @@
 ﻿using BasketApp.Core.Configs;
-using BasketApp.Data.Entites;
+using BasketApp.Data.Documents;
+using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 
 namespace BasketApp.Data.Contexts
@@ -7,10 +8,9 @@ namespace BasketApp.Data.Contexts
     public class BasketAppContext : IBasketAppContext
     {
         private readonly IMongoDatabase _mongoDatabase;
-        public BasketAppContext(MongoDbConfig mongoDbConfig)
+        public BasketAppContext(IOptions<MongoDbSettings> mongoDbSettings)
         {
-            var mongoClient = new MongoClient(mongoDbConfig.ConnectionString);
-            _mongoDatabase = mongoClient.GetDatabase(mongoDbConfig.Database);
+            _mongoDatabase = new MongoClient(mongoDbSettings.Value.ConnectionString).GetDatabase(mongoDbSettings.Value.DatabaseName);
         }
 
         public IMongoCollection<Product> Products => _mongoDatabase.GetCollection<Product>("Products");

@@ -16,10 +16,10 @@ namespace BasketApp.ServiceHost.Api.Controllers
             _mediator = mediator;
         }
 
-        [HttpPost]
-        [Route("/{ProductId}")]
-        public async Task<IActionResult> Post([FromBody]AddProductToCartCommand command)
+        [HttpPost("{productId}")]
+        public async Task<IActionResult> Post([FromRoute] string productId, [FromBody] AddProductToCartCommand command)
         {
+            command.ProductId = productId;
             var result = await _mediator.Send(command);
             return Ok(result);
         }

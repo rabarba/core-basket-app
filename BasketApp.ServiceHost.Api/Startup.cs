@@ -1,11 +1,19 @@
 using BasketApp.Core.Configs;
 using BasketApp.Data.Contexts;
+using BasketApp.Data.Repositories;
+using BasketApp.Data.Repositories.Impl;
+using BasketApp.Service.Services;
+using BasketApp.Service.Services.Impl;
+using BasketApp.ServiceHost.Api.Handlers.ShoppingCarts.Commands;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
+using System.Reflection;
 
 namespace BasketApp.ServiceHost.Api
 {
@@ -21,10 +29,17 @@ namespace BasketApp.ServiceHost.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            var mongoDbConfig = new MongoDbConfig();
-            Configuration.Bind(mongoDbConfig);
+            services.Configure<MongoDbSettings>(Configuration.GetSection("MongoDbSettings"));
 
-            new BasketAppContext(mongoDbConfig);
+            services.AddSingleton<IMongoDbSettings>(serviceProvider => serviceProvider.GetRequiredService<IOptions<MongoDbSettings>>().Value);
+
+            services.AddMediatR(typeof(AddProductToCartCommand).GetTypeInfo().Assembly);
+
+            services.AddScoped<ICartRepository, CartRepository>();
+            services.AddScoped<IProductRepository, ProductRepository>();
+
+            services.AddScoped<ICartService, CartService>();
+            services.AddScoped<IProductService, ProductService>();
 
             services.AddControllers();
 
@@ -32,6 +47,7 @@ namespace BasketApp.ServiceHost.Api
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Basket App Api", Version = "v1" });
             });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
