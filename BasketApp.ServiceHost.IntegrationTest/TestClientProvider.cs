@@ -16,7 +16,7 @@ namespace BasketApp.ServiceHost.IntegrationTest
         public TestClientProvider()
         {
             var projectDir = Directory.GetCurrentDirectory();
-            var configPath = Path.Combine(projectDir, "appsettings.json");
+            var configPath = Path.Combine(projectDir, "appsettings.Development.json");
 
             _testServer = new TestServer(new WebHostBuilder().ConfigureAppConfiguration((context, conf) =>
             {

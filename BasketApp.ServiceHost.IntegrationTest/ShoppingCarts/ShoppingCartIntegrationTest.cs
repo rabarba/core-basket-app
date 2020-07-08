@@ -9,11 +9,11 @@ using Xunit;
 
 namespace BasketApp.ServiceHost.IntegrationTest.ShoppingCarts
 {
-    // Test Ids mistmatch because of creating new productIds
+    // Test Ids may mistmatch because of creating new productIds
     public class ShoppingCartIntegrationTest
     {
         [Theory]
-        [InlineData("5f048f0bfd90440a2cc14119")]
+        [InlineData("5f0581de6568e708fc26007a")]
         public async Task Add_Product_To_Not_Existing_ShoppingCart_Should_Return_Cart_Id(string productId)
         {
             // Arrange
