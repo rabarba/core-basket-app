@@ -9,6 +9,7 @@ using Xunit;
 
 namespace BasketApp.ServiceHost.IntegrationTest.ShoppingCarts
 {
+    // Test Ids mistmatch because of creating new productIds
     public class ShoppingCartIntegrationTest
     {
         [Theory]
