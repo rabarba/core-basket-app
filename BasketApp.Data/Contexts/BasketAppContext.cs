@@ -8,6 +8,7 @@ namespace BasketApp.Data.Contexts
     public class BasketAppContext : IBasketAppContext
     {
         private readonly IMongoDatabase _mongoDatabase;
+
         public BasketAppContext(IOptions<MongoDbSettings> mongoDbSettings)
         {
             _mongoDatabase = new MongoClient(mongoDbSettings.Value.ConnectionString).GetDatabase(mongoDbSettings.Value.DatabaseName);

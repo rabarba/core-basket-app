@@ -1,4 +1,5 @@
 using BasketApp.Data.Configs;
+using BasketApp.Data.Contexts;
 using BasketApp.Data.Repositories;
 using BasketApp.Data.Repositories.Impl;
 using BasketApp.Service.Services;
@@ -33,7 +34,15 @@ namespace BasketApp.ServiceHost.Api
 
             services.AddSingleton<IMongoDbSettings>(serviceProvider => serviceProvider.GetRequiredService<IOptions<MongoDbSettings>>().Value);
 
+            // We can add another pipeline before or after requests like caching,logging
             services.AddMediatR(typeof(AddProductToCartCommand).GetTypeInfo().Assembly);
+
+            #region DummyProductList
+            var provider = services.BuildServiceProvider();
+            var settings = provider.GetService<IOptions<MongoDbSettings>>();
+            var context = new BasketAppContext(settings);
+            context.Products.InsertMany(settings.Value.ProductList);
+            #endregion
 
             services.AddScoped<ICartRepository, CartRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();
@@ -66,7 +75,7 @@ namespace BasketApp.ServiceHost.Api
 
             app.UseExceptionHandler(appError =>
             {
-               
+
             });
 
             app.UseRouting();
@@ -78,7 +87,7 @@ namespace BasketApp.ServiceHost.Api
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-            });      
+            });
         }
     }
 }
